@@ -16,5 +16,8 @@ hello_openmp: hello_openmp.c
 hello_mpi: hello_mpi.c
 	$(MPICC) $(MPIFLAGS) -o $@ $^ $(MPILIBS)
 
+gtmp_counter: gtmp_counter.c hello_openmp.c
+	$(CC) $(OMPFLAGS) -o $@ $^ $(OMPLIBS)
+
 clean:
-	rm -rf *.o hello_openmp hello_mpi
+	rm -rf *.o hello_openmp hello_mpi gtmp_counter

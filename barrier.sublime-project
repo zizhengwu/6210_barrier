@@ -9,6 +9,9 @@
   {
     "sublimeclang_options":
     [
+      "-I/usr/lib/openmpi/include",
+      "-I/usr/lib/openmpi/include/openmpi",
+      "-L/usr/lib/openmpi/lib",
       "-I/usr/lib/gcc/x86_64-linux-gnu/4.6/include"
     ]
   }

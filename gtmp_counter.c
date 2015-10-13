@@ -1,5 +1,6 @@
 #include <omp.h>
 #include "gtmp.h"
+#include "stdio.h"
 
 /*
     From the MCS Paper: A sense-reversing centralized barrier
@@ -23,7 +24,7 @@ void gtmp_init(int num_threads){
 }
 
 void gtmp_barrier(){
-
+    printf("I am thread %d\n", omp_get_thread_num());
 }
 
 void gtmp_finalize(){
