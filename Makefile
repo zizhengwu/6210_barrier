@@ -1,6 +1,7 @@
 #OpenMP Flags Etc.
 OMPFLAGS = -g -Wall -fopenmp -DLEVEL1_DCACHE_LINESIZE=`getconf LEVEL1_DCACHE_LINESIZE`
 OMPLIBS = -lgomp
+ADDITIONALFLAGS = -lm
 CC = gcc
 
 #MPI Flags Etc (may need to customize)
@@ -16,5 +17,14 @@ hello_openmp: hello_openmp.c
 hello_mpi: hello_mpi.c
 	$(MPICC) $(MPIFLAGS) -o $@ $^ $(MPILIBS)
 
+gtmp_counter: gtmp_counter.c hello_openmp.c
+	$(CC) $(OMPFLAGS) -o $@ $^ $(OMPLIBS)
+
+gtmp_mcs: gtmp_mcs.c hello_openmp.c
+	$(CC) $(OMPFLAGS) -o $@ $^ $(OMPLIBS) $(ADDITIONALFLAGS)
+
+gtmpi_counter: gtmpi_counter.c hello_mpi.c
+	$(MPICC) $(MPIFLAGS) -o $@ $^ $(MPILIBS)
+
 clean:
-	rm -rf *.o hello_openmp hello_mpi
+	rm -rf *.o hello_openmp hello_mpi gtmp_counter gtmpi_counter gtmp_mcs
