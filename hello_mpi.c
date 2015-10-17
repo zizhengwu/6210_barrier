@@ -6,7 +6,7 @@
 
 int main(int argc, char **argv)
 {
-  int req_processes = 9;
+  int req_processes = 7;
   int my_id, num_processes;
   struct utsname ugnm;
 
@@ -24,8 +24,7 @@ int main(int argc, char **argv)
 
   uname(&ugnm);
 
-  printf("Hello World from thread %d of %d, running on %s.\n", my_id, num_processes, ugnm.nodename);
-
+  fprintf(stderr, "Hello World from thread %d of %d, running on %s.\n", my_id, num_processes, ugnm.nodename);
   gtmpi_barrier();
   fprintf(stderr, "thread %d exiting barrier\n", my_id);
 
