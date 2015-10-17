@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <mpi.h>
 #include "gtmpi.h"
-#include <math.h>
+// #include <math.h>
+#include <string.h>
 
 /*
     From the MCS Paper: A scalable, distributed tournament barrier with only local spinning
@@ -63,30 +64,39 @@
 
 static int P;
 
+int power(int x, unsigned int y)
+{
+    if( y == 0)
+        return 1;
+    else if (y%2 == 0)
+        return power(x, y/2)*power(x, y/2);
+    else
+        return x*power(x, y/2)*power(x, y/2);
+}
+
 const char* role(int i, int k)
 {
   if (k > 0 && 
-    i % (int)pow(2, k) == 0 &&
-    i + (int) pow(2, k-1) < P &&
-    (int) pow(2, k) < P
-    )
+    i % (int)power(2, k) == 0 &&
+    i + (int) power(2, k-1) < P &&
+    (int) power(2, k) < P)
   {
     return "winner";
   }
   else if(k > 0 &&
-    i % (int) pow(2, k) == 0 &&
-    i + (int) pow(2, k-1) >= P)
+    i % (int) power(2, k) == 0 &&
+    i + (int) power(2, k-1) >= P)
   {
     return "bye";
   }
   else if(k > 0 &&
-    i % (int) pow(2, k) == pow(2, k-1))
+    i % (int) power(2, k) == power(2, k-1))
   {
     return "loser";
   }
   else if(k > 0 &&
     i == 0 &&
-    (int) pow(2, k) >= P)
+    (int) power(2, k) >= P)
   {
     return "champion";
   }
@@ -97,20 +107,91 @@ const char* role(int i, int k)
   return "undefined";
 }
 
+int opponent(int i, int k, const char* role)
+{
+  if (!strcmp(role, "loser"))
+  {
+    return i - (int) power(2, k-1);
+  }
+  if (!strcmp(role, "winner") || !strcmp(role, "champion"))
+  {
+    return i + (int) power(2, k-1);
+  }
+  return -1;
+}
+
 void gtmpi_init(int num_threads){
   P = num_threads;
 }
 
 void gtmpi_barrier(){
+  int opponent(int i, int k, const char* role);
+  const char* role(int i, int k);
   int vpid, round;
 
   MPI_Comm_rank(MPI_COMM_WORLD, &vpid);
-  round = 2;
-  printf("round: %d, vpid: %d, %s\n", round, vpid, role(vpid, round));
-  // while(1)
-  // {
-
-  // }
+  round = 1;
+  while(1)
+  {
+    if (!strcmp(role(vpid, round), "loser"))
+    {
+      // fprintf(stderr, "loser round %d thread %d send to thread %d\n", round, vpid, opponent(vpid, round, role(vpid, round)));
+      MPI_Send(NULL, 0, MPI_INT, opponent(vpid, round, role(vpid, round)), 1, MPI_COMM_WORLD);
+      // fprintf(stderr, "loser round %d thread %d waiting for thread %d\n", round, vpid, opponent(vpid, round, role(vpid, round)));
+      MPI_Recv(NULL, 0, MPI_INT, opponent(vpid, round, role(vpid, round)), 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+      // fprintf(stderr, "loser round %d thread %d received from thread %d\n", round, vpid, opponent(vpid, round, role(vpid, round)));
+      break;
+    }
+    else if (!strcmp(role(vpid, round), "winner"))
+    {
+      // fprintf(stderr, "winner round %d thread %d waiting for thread %d\n", round, vpid, opponent(vpid, round, role(vpid, round)));
+      MPI_Recv(NULL, 0, MPI_INT, opponent(vpid, round, role(vpid, round)), 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+      // fprintf(stderr, "winner round %d thread %d received from thread %d\n", round, vpid, opponent(vpid, round, role(vpid, round)));
+    }
+    else if(!strcmp(role(vpid, round), "bye"))
+    {
+      // nothing
+    }
+    else if(!strcmp(role(vpid, round), "champion"))
+    {
+      // fprintf(stderr, "champion round %d thread %d waiting for thread %d\n", round, vpid, opponent(vpid, round, role(vpid, round)));
+      MPI_Recv(NULL, 0, MPI_INT, opponent(vpid, round, role(vpid, round)), 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+      // fprintf(stderr, "champion round %d thread %d send to thread %d\n", round, vpid, opponent(vpid, round, role(vpid, round)));
+      MPI_Send(NULL, 0, MPI_INT, opponent(vpid, round, role(vpid, round)), 1, MPI_COMM_WORLD);
+      break;
+    }
+    else
+    {
+      // exit(1);
+    }
+    round++;
+  }
+  // fprintf(stderr, "thread %d wakeup\n", vpid);
+  while(1)
+  {
+    round--;
+    if (!strcmp(role(vpid, round), "loser"))
+    {
+      break;
+    }
+    if (!strcmp(role(vpid, round), "winner"))
+    {
+      // fprintf(stderr, "wakeup round %d thread %d send to thread %d\n", round, vpid, opponent(vpid, round, role(vpid, round)));
+      MPI_Send(NULL, 0, MPI_INT, opponent(vpid, round, role(vpid, round)), 1, MPI_COMM_WORLD);
+    }
+    if (!strcmp(role(vpid, round), "bye"))
+    {
+      // nothing
+    }
+    if (!strcmp(role(vpid, round), "champion"))
+    {
+      break;
+    }
+    if (!strcmp(role(vpid, round), "dropout"))
+    {
+      break;
+    }
+  }
 }
 
 void gtmpi_finalize(){
