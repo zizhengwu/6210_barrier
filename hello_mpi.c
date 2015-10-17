@@ -6,7 +6,7 @@
 
 int main(int argc, char **argv)
 {
-  int req_processes = 9;
+  int req_processes = 7;
   int my_id, num_processes;
   struct utsname ugnm;
 

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <mpi.h>
 #include "gtmpi.h"
+#include <math.h>
 
 /*
     From the MCS Paper: A scalable, distributed tournament barrier with only local spinning
@@ -60,14 +61,59 @@
 	sense := not sense
 */
 
+static int P;
+
+const char* role(int i, int k)
+{
+  if (k > 0 && 
+    i % (int)pow(2, k) == 0 &&
+    i + (int) pow(2, k-1) < P &&
+    (int) pow(2, k) < P
+    )
+  {
+    return "winner";
+  }
+  else if(k > 0 &&
+    i % (int) pow(2, k) == 0 &&
+    i + (int) pow(2, k-1) >= P)
+  {
+    return "bye";
+  }
+  else if(k > 0 &&
+    i % (int) pow(2, k) == pow(2, k-1))
+  {
+    return "loser";
+  }
+  else if(k > 0 &&
+    i == 0 &&
+    (int) pow(2, k) >= P)
+  {
+    return "champion";
+  }
+  else if(k == 0)
+  {
+    return "dropout";
+  }
+  return "undefined";
+}
 
 void gtmpi_init(int num_threads){
-
+  P = num_threads;
 }
 
 void gtmpi_barrier(){
+  int vpid, round;
+
+  MPI_Comm_rank(MPI_COMM_WORLD, &vpid);
+  round = 2;
+  printf("round: %d, vpid: %d, %s\n", round, vpid, role(vpid, round));
+  // while(1)
+  // {
+
+  // }
 }
 
 void gtmpi_finalize(){
 
 }
+
