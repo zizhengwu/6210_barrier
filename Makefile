@@ -29,5 +29,8 @@ gtmpi_counter: gtmpi_counter.c hello_mpi.c
 gtmpi_tournament: gtmpi_tournament.c hello_mpi.c
 	$(MPICC) $(MPIFLAGS) -o $@ $^ $(MPILIBS)
 
+hello_openmp_mpi: hello_openmp_mpi.c gtmpi_tournament.c gtmp_mcs.c
+	$(MPICC) $(MPIFLAGS) $(OMPFLAGS) -o $@ $^ $(MPILIBS) $(OMPLIBS) $(ADDITIONALFLAGS)
+
 clean:
-	rm -rf *.o hello_openmp hello_mpi gtmp_counter gtmpi_counter gtmp_mcs gtmpi_tournament
+	rm -rf *.o hello_openmp hello_mpi gtmp_counter gtmpi_counter gtmp_mcs gtmpi_tournament hello_openmp_mpi
