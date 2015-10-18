@@ -27,10 +27,10 @@ void gtmp_init(int num_threads){
 
 void gtmp_barrier(){
     bool local_sense = false;
-    fprintf(stderr, "I am thread %d\n", omp_get_thread_num());
+    // fprintf(stderr, "I am thread %d\n", omp_get_thread_num());
     if (__sync_fetch_and_sub(&count, 1) == 1)
     {
-        fprintf(stderr, "fetch_and_sub %d\n", count);
+        // fprintf(stderr, "fetch_and_sub %d\n", count);
         count = omp_get_num_threads();
         sense = local_sense;
     }

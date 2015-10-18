@@ -12,7 +12,7 @@ int main(int argc, char **argv)
   int num_threads = strtol(argv[2], NULL, 10);
   int my_id, num_processes;
   struct utsname ugnm;
-  printf("%d\n", num_threads);
+  // printf("%d\n", num_threads);
   gtmpi_init(req_processes);
   MPI_Init(&argc, &argv);
   
@@ -41,12 +41,12 @@ int main(int argc, char **argv)
     uname(&ugnm);
 
     gtmp_barrier();
-    printf("exiting thread %d of process %d, running on %s.\n", thread_num, my_id, ugnm.nodename);
+    // fprintf(stderr, "exiting thread %d of process %d, running on %s.\n", thread_num, my_id, ugnm.nodename);
   }
 
   gtmp_finalize();
   gtmpi_barrier();
-  fprintf(stderr, "exiting process %d of %d running on %s.\n", my_id, num_processes, ugnm.nodename);
+  // fprintf(stderr, "exiting process %d of %d running on %s.\n", my_id, num_processes, ugnm.nodename);
 
   MPI_Finalize();
   gtmpi_finalize();
