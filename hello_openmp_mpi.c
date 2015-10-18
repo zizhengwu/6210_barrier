@@ -33,7 +33,7 @@ int main(int argc, char **argv)
   omp_set_dynamic(0);
   if (omp_get_dynamic()) {printf("Warning: dynamic adjustment of threads has been set\n");}
   omp_set_num_threads(num_threads);
-  
+
   clock_gettime(CLOCK_REALTIME, &ts0);
   fprintf(stderr, "initial: %ld \n", ts0.tv_nsec);
   int i;
@@ -47,10 +47,9 @@ int main(int argc, char **argv)
       gtmp_init(num_threads);
 #pragma omp parallel
       {
-        int thread_num = omp_get_thread_num();
+        // int thread_num = omp_get_thread_num();
         struct utsname ugnm;
         
-        num_threads = omp_get_num_threads();
         uname(&ugnm);
         gtmp_barrier();
         gtmp_finalize();
