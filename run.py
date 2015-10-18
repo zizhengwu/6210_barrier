@@ -47,7 +47,7 @@ if __name__ == '__main__':
         if len(sys.argv) < 3:
             print("usage: python run.py mpi_tournament process_num")
         else:
-            openmp_mcs(sys.argv[2])
+            mpi_tournament(sys.argv[2])
     else:
         print("usage: python run.py openmp_mpi process_num thread_num")
         print("usage: python run.py openmp_counter thread_num")

@@ -3,9 +3,11 @@
 #include <stdlib.h>
 #include "mpi.h"
 #include "gtmpi.h"
+#include <time.h>
 
 int main(int argc, char **argv)
 {
+  struct timespec ts0;
   int req_processes = strtol(argv[1], NULL, 10);
   int my_id, num_processes;
   struct utsname ugnm;
@@ -25,8 +27,18 @@ int main(int argc, char **argv)
   uname(&ugnm);
 
   // fprintf(stderr, "Hello World from thread %d of %d, running on %s.\n", my_id, num_processes, ugnm.nodename);
-  gtmpi_barrier();
+  clock_gettime(CLOCK_REALTIME, &ts0);
+  fprintf(stderr, "initial: %ld \n", ts0.tv_nsec);
+
+  int i;
+  for (i = 0; i < 1000; ++i)
+  {
+      gtmpi_barrier();
+  }
   // fprintf(stderr, "thread %d exiting barrier\n", my_id);
+
+  clock_gettime(CLOCK_REALTIME, &ts0);
+  fprintf(stderr, "exit: %ld \n", ts0.tv_nsec);
 
   MPI_Finalize();
   gtmpi_finalize();

@@ -5,6 +5,8 @@
 #include "mpi.h"
 #include "gtmpi.h"
 #include "gtmp.h"
+#include <time.h>
+
 
 int main(int argc, char **argv)
 {
