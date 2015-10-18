@@ -9,7 +9,6 @@ int main(int argc, char **argv)
 {
   int num_threads;
   // Serial code
-  printf("This is the serial section\n");
   if (argc < 2){
     fprintf(stderr, "Usage: ./hello_world [NUM_THREADS]\n");
     exit(1);
