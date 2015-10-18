@@ -5,7 +5,7 @@ import sys
 def openmp_mpi(process_num, thread_num):
     print(sys.argv[1])
     call(["make", "hello_openmp_mpi"])
-    call(["mpirun", "-np", str(process_num), "hello_openmp_mpi", str(process_num), str(thread_num)])
+    call(["/opt/openmpi-1.4.3-gcc44/bin/mpirun", "-np", str(process_num), "hello_openmp_mpi", str(process_num), str(thread_num)])
 
 
 def openmp_counter(thread_num):
@@ -20,7 +20,7 @@ def openmp_mcs(thread_num):
 
 def mpi_tournament(process_num):
     call(["make", "gtmpi_tournament"])
-    call(["mpirun", "-np", str(process_num), "gtmpi_tournament", str(process_num)])
+    call(["/opt/openmpi-1.4.3-gcc44/bin/mpirun", "-np", str(process_num), "gtmpi_tournament", str(process_num)])
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
