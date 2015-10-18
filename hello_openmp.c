@@ -29,9 +29,9 @@ int main(int argc, char **argv)
     num_threads = omp_get_num_threads();
     uname(&ugnm);
 
-    // printf("Hello World from thread %d of %d, running on %s.\n", thread_num, num_threads, ugnm.nodename);
+    // fprintf(stderr, "Hello World from thread %d of %d, running on %s.\n", thread_num, num_threads, ugnm.nodename);
     gtmp_barrier();
-    // printf("%d is exiting barrier\n", thread_num);
+    // fprintf(stderr, "%d is exiting barrier\n", thread_num);
   } // implied barrier
 
   // Resume serial code

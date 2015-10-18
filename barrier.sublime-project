@@ -9,6 +9,7 @@
   {
     "sublimeclang_options":
     [
+      // "-W",
       "-I/usr/lib/openmpi/include",
       "-I/usr/lib/openmpi/include/openmpi",
       "-L/usr/lib/openmpi/lib",
