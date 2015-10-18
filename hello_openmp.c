@@ -24,7 +24,7 @@ int main(int argc, char **argv)
   clock_gettime(CLOCK_REALTIME, &ts0);
   fprintf(stderr, "initial: %ld \n", ts0.tv_nsec);
   int i;
-  for (i = 0; i < 100000; ++i)
+  for (i = 0; i < 10000; ++i)
   {
     gtmp_init(num_threads);
 #pragma omp parallel

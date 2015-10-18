@@ -42,7 +42,7 @@ int main(int argc, char **argv)
     gtmpi_init(req_processes);
 
     int j;
-    for (j = 0; j < 1000; ++j)
+    for (j = 0; j < 100; ++j)
     {
       gtmp_init(num_threads);
 #pragma omp parallel

@@ -30,7 +30,7 @@ int main(int argc, char **argv)
   fprintf(stderr, "initial: %ld \n", ts0.tv_nsec);
 
   int i;
-  for (i = 0; i < 100000; ++i)
+  for (i = 0; i < 10000; ++i)
   {
     gtmpi_init(req_processes);
     gtmpi_barrier();
