@@ -10,12 +10,13 @@
 
 int main(int argc, char **argv)
 {
+  struct timespec ts0;
   int req_processes = strtol(argv[1], NULL, 10);
   int num_threads = strtol(argv[2], NULL, 10);
   int my_id, num_processes;
   struct utsname ugnm;
   // printf("%d\n", num_threads);
-  gtmpi_init(req_processes);
+
   MPI_Init(&argc, &argv);
   
   MPI_Comm_size(MPI_COMM_WORLD, &num_processes);
@@ -23,7 +24,7 @@ int main(int argc, char **argv)
 
   if(num_processes != req_processes){
     fprintf(stderr, "Wrong number of processes.  Required: %d, Actual: %d\n",
-        req_processes, num_processes);
+      req_processes, num_processes);
     exit(1);
   }
 
@@ -32,24 +33,36 @@ int main(int argc, char **argv)
   omp_set_dynamic(0);
   if (omp_get_dynamic()) {printf("Warning: dynamic adjustment of threads has been set\n");}
   omp_set_num_threads(num_threads);
-
-  gtmp_init(num_threads);
-#pragma omp parallel
+  
+  clock_gettime(CLOCK_REALTIME, &ts0);
+  fprintf(stderr, "initial: %ld \n", ts0.tv_nsec);
+  int i;
+  for (i = 0; i < 100; ++i)
   {
-    int thread_num = omp_get_thread_num();
-    struct utsname ugnm;
-    
-    num_threads = omp_get_num_threads();
-    uname(&ugnm);
+    gtmpi_init(req_processes);
 
-    gtmp_barrier();
-    // fprintf(stderr, "exiting thread %d of process %d, running on %s.\n", thread_num, my_id, ugnm.nodename);
+    int j;
+    for (j = 0; j < 1000; ++j)
+    {
+      gtmp_init(num_threads);
+#pragma omp parallel
+      {
+        int thread_num = omp_get_thread_num();
+        struct utsname ugnm;
+        
+        num_threads = omp_get_num_threads();
+        uname(&ugnm);
+        gtmp_barrier();
+        gtmp_finalize();
+      }
+      // fprintf(stderr, "exiting thread %d of process %d, running on %s.\n", thread_num, my_id, ugnm.nodename);
+    }
+    gtmpi_barrier();
   }
 
-  gtmp_finalize();
-  gtmpi_barrier();
   // fprintf(stderr, "exiting process %d of %d running on %s.\n", my_id, num_processes, ugnm.nodename);
-
+  clock_gettime(CLOCK_REALTIME, &ts0);
+  fprintf(stderr, "exit: %ld \n", ts0.tv_nsec);
   MPI_Finalize();
   gtmpi_finalize();
   return 0;

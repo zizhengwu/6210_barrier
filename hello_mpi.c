@@ -12,7 +12,6 @@ int main(int argc, char **argv)
   int my_id, num_processes;
   struct utsname ugnm;
 
-  gtmpi_init(req_processes);
   MPI_Init(&argc, &argv);
 
   MPI_Comm_size(MPI_COMM_WORLD, &num_processes);
@@ -31,9 +30,10 @@ int main(int argc, char **argv)
   fprintf(stderr, "initial: %ld \n", ts0.tv_nsec);
 
   int i;
-  for (i = 0; i < 1000; ++i)
+  for (i = 0; i < 100000; ++i)
   {
-      gtmpi_barrier();
+    gtmpi_init(req_processes);
+    gtmpi_barrier();
   }
   // fprintf(stderr, "thread %d exiting barrier\n", my_id);
 
