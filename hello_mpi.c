@@ -27,7 +27,7 @@ int main(int argc, char **argv)
 
   // fprintf(stderr, "Hello World from thread %d of %d, running on %s.\n", my_id, num_processes, ugnm.nodename);
   clock_gettime(CLOCK_REALTIME, &ts0);
-  fprintf(stderr, "initial: %ld \n", ts0.tv_nsec);
+  fprintf(stderr, "initial: %lld %ld \n", (long long)ts0.tv_sec, ts0.tv_nsec);
 
   int i;
   for (i = 0; i < 10000; ++i)
@@ -38,7 +38,7 @@ int main(int argc, char **argv)
   // fprintf(stderr, "thread %d exiting barrier\n", my_id);
 
   clock_gettime(CLOCK_REALTIME, &ts0);
-  fprintf(stderr, "exit: %ld \n", ts0.tv_nsec);
+  fprintf(stderr, "exit: %lld %ld \n", (long long)ts0.tv_sec, ts0.tv_nsec);
 
   MPI_Finalize();
   gtmpi_finalize();

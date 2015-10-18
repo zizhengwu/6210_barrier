@@ -22,7 +22,7 @@ int main(int argc, char **argv)
   if (omp_get_dynamic()) {printf("Warning: dynamic adjustment of threads has been set\n");}
   omp_set_num_threads(num_threads);
   clock_gettime(CLOCK_REALTIME, &ts0);
-  fprintf(stderr, "initial: %ld \n", ts0.tv_nsec);
+  fprintf(stderr, "initial: %lld %ld \n", (long long)ts0.tv_sec, ts0.tv_nsec);
   int i;
   for (i = 0; i < 10000; ++i)
   {
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
   }
 
   clock_gettime(CLOCK_REALTIME, &ts0);
-  fprintf(stderr, "exit: %ld \n", ts0.tv_nsec);
+  fprintf(stderr, "exit: %lld %ld \n", (long long)ts0.tv_sec, ts0.tv_nsec);
   // Resume serial code
   // printf("Back in the serial section again\n");
   gtmp_finalize();
