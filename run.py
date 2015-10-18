@@ -23,6 +23,11 @@ def mpi_tournament(process_num):
     call(["make", "gtmpi_tournament"])
     call([mpirun, "-np", str(process_num), "gtmpi_tournament", str(process_num)])
 
+
+def mpi_dissemination(process_num):
+    call(["make", "gtmpi_dissemination"])
+    call([mpirun, "-np", str(process_num), "gtmpi_dissemination", str(process_num)])
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print("usage: python run.py openmp_mpi process_num thread_num")
@@ -49,6 +54,11 @@ if __name__ == '__main__':
             print("usage: python run.py mpi_tournament process_num")
         else:
             mpi_tournament(sys.argv[2])
+    elif sys.argv[1] == "mpi_dissemination":
+        if len(sys.argv) < 3:
+            print("usage: python run.py mpi_dissemination process_num")
+        else:
+            mpi_dissemination(sys.argv[2])
     else:
         print("usage: python run.py openmp_mpi process_num thread_num")
         print("usage: python run.py openmp_counter thread_num")
