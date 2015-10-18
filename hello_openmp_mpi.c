@@ -48,12 +48,9 @@ int main(int argc, char **argv)
 #pragma omp parallel
       {
         // int thread_num = omp_get_thread_num();
-        struct utsname ugnm;
-        
-        uname(&ugnm);
         gtmp_barrier();
-        gtmp_finalize();
       }
+      gtmp_finalize();
       // fprintf(stderr, "exiting thread %d of process %d, running on %s.\n", thread_num, my_id, ugnm.nodename);
     }
     gtmpi_barrier();

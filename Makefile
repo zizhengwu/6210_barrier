@@ -9,6 +9,7 @@ CC = gcc
 MPIFLAGS = -g -Wall #-I$(MPICH)/include
 MPILIBS =
 MPICC = /opt/openmpi-1.4.3-gcc44/bin/mpicc
+# MPICC = mpicc
 
 hello_openmp: hello_openmp.c
 	$(CC) $(OMPFLAGS) -o $@ $^ $(OMPLIBS) $(ADDITIONALFLAGS)
