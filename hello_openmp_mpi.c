@@ -37,12 +37,12 @@ int main(int argc, char **argv)
   clock_gettime(CLOCK_REALTIME, &ts0);
   fprintf(stderr, "initial: %lld %ld \n", (long long)ts0.tv_sec, ts0.tv_nsec);
   int i;
-  for (i = 0; i < 100; ++i)
+  for (i = 0; i < 50; ++i)
   {
     gtmpi_init(req_processes);
 
     int j;
-    for (j = 0; j < 100; ++j)
+    for (j = 0; j < 50; ++j)
     {
       gtmp_init(num_threads);
 #pragma omp parallel

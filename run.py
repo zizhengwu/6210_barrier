@@ -64,3 +64,5 @@ if __name__ == '__main__':
         print("usage: python run.py openmp_counter thread_num")
         print("usage: python run.py openmp_mcs thread_num")
         print("usage: python run.py mpi_tournament process_num")
+        print("usage: python run.py mpi_dissemination process_num")
+
