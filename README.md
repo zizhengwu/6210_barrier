@@ -1,7 +1,10 @@
 # Jinx
 To submit jobs to Jinx, please `cd 6210_barrier`. 
+
 Modify `Makefile`, comment line `MPICC = mpicc` and uncomment line `MPICC = /opt/openmpi-1.4.3-gcc44/bin/mpicc`. 
-Modify `run.py`, comment line `mpirun = "mpirun"` and comment line `mpirun = "/opt/openmpi-1.4.3-gcc44/bin/mpirun"`. 
+
+Modify `run.py`, comment line `mpirun = "mpirun"` and uncomment line `mpirun = "/opt/openmpi-1.4.3-gcc44/bin/mpirun"`. 
+
 At last, `qsub openmp.sh`, or `qsub openmpi.sh`, or `qsub mp_mpi.sh`.
 
 # Local
