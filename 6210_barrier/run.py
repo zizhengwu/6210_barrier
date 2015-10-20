@@ -1,7 +1,7 @@
 from subprocess import call
 import sys
-# mpirun = "mpirun"
-mpirun = "/opt/openmpi-1.4.3-gcc44/bin/mpirun"
+mpirun = "mpirun"
+# mpirun = "/opt/openmpi-1.4.3-gcc44/bin/mpirun"
 
 def openmp_mpi(process_num, thread_num):
     print(sys.argv[1])

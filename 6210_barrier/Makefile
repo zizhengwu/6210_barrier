@@ -8,8 +8,8 @@ CC = gcc
 #MPICH = /usr/lib64/openmpi/1.4-gcc
 MPIFLAGS = -g -Wall #-I$(MPICH)/include
 MPILIBS =
-MPICC = /opt/openmpi-1.4.3-gcc44/bin/mpicc
-# MPICC = mpicc
+# MPICC = /opt/openmpi-1.4.3-gcc44/bin/mpicc
+MPICC = mpicc
 
 hello_openmp: hello_openmp.c
 	$(CC) $(OMPFLAGS) -o $@ $^ $(OMPLIBS) $(ADDITIONALFLAGS)
@@ -31,12 +31,6 @@ gtmpi_tournament: gtmpi_tournament.c hello_mpi.c
 
 gtmpi_dissemination: gtmpi_dissemination.c hello_mpi.c
 	$(MPICC) $(MPIFLAGS) -o $@ $^ $(MPILIBS) $(ADDITIONALFLAGS)
-
-hello_openmp_mpi: hello_openmp_mpi.c gtmpi_tournament.c gtmp_mcs.c
-	$(MPICC) $(MPIFLAGS) $(OMPFLAGS) -o $@ $^ $(MPILIBS) $(OMPLIBS) $(ADDITIONALFLAGS)
-
-gtmpi_tournament: gtmpi_tournament.c hello_mpi.c
-	$(MPICC) $(MPIFLAGS) -o $@ $^ $(MPILIBS)
 
 hello_openmp_mpi: hello_openmp_mpi.c gtmpi_tournament.c gtmp_mcs.c
 	$(MPICC) $(MPIFLAGS) $(OMPFLAGS) -o $@ $^ $(MPILIBS) $(OMPLIBS) $(ADDITIONALFLAGS)
