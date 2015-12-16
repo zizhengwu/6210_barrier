@@ -1,0 +1,22 @@
+sudo: required
+dist: trusty
+
+language: cpp
+
+compiler: gcc
+
+before_install:
+    - sudo apt-get update -qq
+
+install:
+    - sudo apt-get install -y openmpi-bin openmpi-doc libopenmpi-dev
+
+before_script:
+    - cd 6210_barrier
+
+script: 
+    - python run.py openmp_mpi 2 2
+    - python run.py openmp_counter 2
+    - python run.py openmp_mcs 2
+    - python run.py mpi_tournament 2
+    - python run.py mpi_dissemination 2

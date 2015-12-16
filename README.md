@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/zizhengwu/Barrier_Synchronization.svg)](https://travis-ci.org/zizhengwu/Barrier_Synchronization)
+
 # Jinx
 To submit jobs to Jinx, please `cd 6210_barrier`. 
 
